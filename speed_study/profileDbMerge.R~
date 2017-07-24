@@ -1,0 +1,85 @@
+library(RPostgreSQL)
+library(GenomicRanges)
+#----------------------------------------------------------------------------------------------------
+# Grab snapshots of the fimo database and bone_element_wellington_20 footprints
+#
+#----------------------------------------------------------------------------------------------------
+# Function for grabbing X rows of the database and bone footprints and saving them as a snapshot
+takeSnapshot <- function(X){
+
+    fimo <- dbConnect(PostgreSQL(),
+                      user = "trena",
+                      password = "trena",
+                      host = "localhost",
+                      dbname = "fimo")
+
+    my.query <- sprintf("select * from fimo_hg38 limit %d", X)
+    fimo.file <- dbGetQuery(fimo, my.query)
+    bone.file <- read.table("/scratch/data/footprints/ENCSR000EMH.bed",
+                            sep="\t", as.is=TRUE, nrows = X)
+
+    saveRDS(fimo.file, file = paste0("fimo_snapshot",X,".RDS"))
+    saveRDS(bone.file, file = paste0("bone_snapshot",X,".RDS"))
+    
+} #createTwoSnapshots
+#----------------------------------------------------------------------------------------------------
+# Load 2 RDS files and profile the merge of them
+profileDbMerge <- function(fimo.file, bone.file){
+
+    # Read the 2 RDS files
+    tbl.fp <- readRDS(bone.file)
+    tbl.fimo <- readRDS(fimo.file)
+    colnames(tbl.fp) <- c("chrom", "start", "end", "name", "score", "strand")
+
+    sampleID <- "Test_sample"
+    method <- "Test_method"
+
+    dbConnection <- dbConnect(PostgreSQL(), user = "trena",password = "trena", host = "localhost", dbname = "fimo")
+    # Pull out only 1 chromosome from the bone file
+    chromosome <- unique(tbl.fp$chrom)[1]
+    tbl.fp <- subset(tbl.fp, chrom == chromosome)
+    
+    # Start the profiler
+    Rprof(tmp <- tempfile())
+
+                min.pos <- min(tbl.fp$start)
+            max.pos <- max(tbl.fp$end)
+            
+            fimo.chromosome <- sub("chr", "", chromosome)
+            query <- sprintf("select * from fimo_hg38 where chrom='%s' and start >= %d and endpos <= %d limit 1000",
+                             fimo.chromosome, min.pos, max.pos)
+            
+            # This is the actual FIMO query that gets the chosen chromosome
+            tbl.fimo <- dbGetQuery(dbConnection, query)
+            colnames(tbl.fimo) <- c("motif", "chrom", "motif.start", "motif.end", "motif.strand",
+                                    "fimo.score","fimo.pvalue", "empty", "motif.sequence")
+            
+            tbl.fimo <- tbl.fimo[, -grep("empty", colnames(tbl.fimo))]
+            tbl.fimo$chrom <- paste("chr", tbl.fimo$chrom, sep="")
+    
+            # Converts the FIMO data into a GenomicRanges object, making the intersection with footprints fast
+            gr.fimo <- with(tbl.fimo, GRanges(seqnames=chrom, IRanges(start=motif.start, end=motif.end)))
+      
+            # --- get some footprints
+            # Converts the footprints into GenomicRanges objects
+            gr.wellington <- with(tbl.fp,   GRanges(seqnames=chrom, IRanges(start=start, end=end)))
+            
+            # the "within" is conservative. I will run this with "any" to increase
+            #the number of motif interesects
+            tbl.overlaps <- as.data.frame(findOverlaps(gr.fimo, gr.wellington, type="any"))
+    
+            tbl.fimo$loc <- with(tbl.fimo, sprintf("%s:%d-%d", chrom, motif.start, motif.end))
+            tbl.fimo$method <- method
+            tbl.fimo$sample_id <- sampleID
+            
+            tbl.regions <- tbl.fimo[tbl.overlaps$queryHits,]
+            tbl.regions <- cbind(tbl.regions,
+                                 wellington.score=tbl.fp[tbl.overlaps$subjectHits, "score"],
+                                 fp.start=tbl.fp[tbl.overlaps$subjectHits, "start"],                                                              fp.end=tbl.fp[tbl.overlaps$subjectHits, "end"])
+
+    # Finish the profiler and print the summary
+    Rprof()
+    test.sum <- summaryRprof(tmp)
+
+    return(list(test.sum, tbl.regions))
+}

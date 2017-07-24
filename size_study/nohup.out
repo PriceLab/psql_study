@@ -1,0 +1,138 @@
+CREATE DATABASE
+CREATE DATABASE
+CREATE DATABASE
+CREATE DATABASE
+CREATE DATABASE
+You are now connected to database "general_1000" as user "postgres".
+CREATE TABLE
+COPY 1000
+CREATE INDEX
+You are now connected to database "general_10000" as user "postgres".
+CREATE TABLE
+COPY 10000
+CREATE INDEX
+You are now connected to database "general_100000" as user "postgres".
+CREATE TABLE
+COPY 100000
+CREATE INDEX
+You are now connected to database "general_1000000" as user "postgres".
+CREATE TABLE
+COPY 1000000
+CREATE INDEX
+You are now connected to database "general_10000000" as user "postgres".
+CREATE TABLE
+COPY 10000000
+CREATE INDEX
+CREATE DATABASE
+CREATE DATABASE
+CREATE DATABASE
+CREATE DATABASE
+CREATE DATABASE
+You are now connected to database "const_1000" as user "postgres".
+CREATE TABLE
+ERROR:  value too long for type character varying(5)
+CONTEXT:  COPY regions, line 1, column chrom: ""chr5""
+CREATE INDEX
+You are now connected to database "const_10000" as user "postgres".
+CREATE TABLE
+ERROR:  value too long for type character varying(5)
+CONTEXT:  COPY regions, line 1, column chrom: ""chr14""
+CREATE INDEX
+You are now connected to database "const_100000" as user "postgres".
+CREATE TABLE
+ERROR:  value too long for type character varying(5)
+CONTEXT:  COPY regions, line 1, column chrom: ""chr19""
+CREATE INDEX
+You are now connected to database "const_1000000" as user "postgres".
+CREATE TABLE
+ERROR:  value too long for type character varying(5)
+CONTEXT:  COPY regions, line 1, column chrom: ""chr9""
+CREATE INDEX
+You are now connected to database "const_10000000" as user "postgres".
+CREATE TABLE
+ERROR:  value too long for type character varying(5)
+CONTEXT:  COPY regions, line 1, column chrom: ""chr20""
+CREATE INDEX
+ERROR:  database "const_1000" already exists
+ERROR:  database "const_10000" already exists
+ERROR:  database "const_100000" already exists
+ERROR:  database "const_1000000" already exists
+ERROR:  database "const_10000000" already exists
+You are now connected to database "const_1000" as user "postgres".
+ERROR:  relation "regions" already exists
+ERROR:  value too long for type character varying(5)
+CONTEXT:  COPY regions, line 1, column chrom: ""chr5""
+ERROR:  relation "regions_index" already exists
+You are now connected to database "const_10000" as user "postgres".
+ERROR:  relation "regions" already exists
+ERROR:  value too long for type character varying(5)
+CONTEXT:  COPY regions, line 1, column chrom: ""chr14""
+ERROR:  relation "regions_index" already exists
+You are now connected to database "const_100000" as user "postgres".
+ERROR:  relation "regions" already exists
+ERROR:  value too long for type character varying(5)
+CONTEXT:  COPY regions, line 1, column chrom: ""chr19""
+ERROR:  relation "regions_index" already exists
+You are now connected to database "const_1000000" as user "postgres".
+ERROR:  relation "regions" already exists
+ERROR:  value too long for type character varying(5)
+CONTEXT:  COPY regions, line 1, column chrom: ""chr9""
+ERROR:  relation "regions_index" already exists
+You are now connected to database "const_10000000" as user "postgres".
+ERROR:  relation "regions" already exists
+ERROR:  value too long for type character varying(5)
+CONTEXT:  COPY regions, line 1, column chrom: ""chr20""
+ERROR:  relation "regions_index" already exists
+CREATE DATABASE
+CREATE DATABASE
+CREATE DATABASE
+CREATE DATABASE
+CREATE DATABASE
+You are now connected to database "const_1000" as user "postgres".
+CREATE TABLE
+COPY 1000
+CREATE INDEX
+You are now connected to database "const_10000" as user "postgres".
+CREATE TABLE
+COPY 10000
+CREATE INDEX
+You are now connected to database "const_100000" as user "postgres".
+CREATE TABLE
+ERROR:  value too long for type character varying(20)
+CONTEXT:  COPY regions, line 100000, column loc: ""chr20:100000-100001""
+CREATE INDEX
+You are now connected to database "const_1000000" as user "postgres".
+CREATE TABLE
+ERROR:  value too long for type character varying(20)
+CONTEXT:  COPY regions, line 100001, column loc: ""chr17:100001-100002""
+CREATE INDEX
+You are now connected to database "const_10000000" as user "postgres".
+CREATE TABLE
+ERROR:  value too long for type character varying(20)
+CONTEXT:  COPY regions, line 100001, column loc: ""chr15:100001-100002""
+CREATE INDEX
+CREATE DATABASE
+CREATE DATABASE
+CREATE DATABASE
+CREATE DATABASE
+CREATE DATABASE
+You are now connected to database "const_1000" as user "postgres".
+CREATE TABLE
+COPY 1000
+CREATE INDEX
+You are now connected to database "const_10000" as user "postgres".
+CREATE TABLE
+COPY 10000
+CREATE INDEX
+You are now connected to database "const_100000" as user "postgres".
+CREATE TABLE
+COPY 100000
+CREATE INDEX
+You are now connected to database "const_1000000" as user "postgres".
+CREATE TABLE
+COPY 1000000
+CREATE INDEX
+You are now connected to database "const_10000000" as user "postgres".
+CREATE TABLE
+COPY 10000000
+CREATE INDEX
